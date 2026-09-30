@@ -100,7 +100,7 @@ class PublisherClient:
 
         try:
             return resp.json()
-        except Exception as exc:
+        except ValueError as exc:
             raise IBOTVisionErrorHandling(f"gateway returned non-JSON response: {resp.text[:200]}") from exc
 
     @staticmethod
