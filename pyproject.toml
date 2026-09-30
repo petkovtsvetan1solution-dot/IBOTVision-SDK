@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "ibotvision-sdk"
+version = "0.1.0"
+description = "IBOTVision signal publishing SDK — connect your bots to institutional-grade P2P signal infrastructure"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+dependencies = [
+    "httpx>=0.24.0",
+]
+
+[project.urls]
+Homepage = "https://ibotvision.com"
+Documentation = "https://ibotvision.com/docs/sdk"
