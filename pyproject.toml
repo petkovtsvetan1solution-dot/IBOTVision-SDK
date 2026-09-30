@@ -5,7 +5,7 @@ build-backend = "setuptools.backends.legacy:build"
 [project]
 name = "ibotvision-sdk"
 version = "0.1.0"
-description = "IBOTVision signal publishing SDK — connect your bots to institutional-grade P2P signal infrastructure"
+description = "IBOTVision symbol publishing SDK — connect your bots to institutional-grade P2P symbol infrastructure"
 readme = "README.md"
 requires-python = ">=3.9"
 license = {text = "MIT"}
