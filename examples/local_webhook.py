@@ -22,7 +22,7 @@ def publish_local(
         VOW_APP_URL,
         json={
             "ticker": ticker.upper(),
-            "signal": action.upper(),
+            "symbol": action.upper(),
             "entry":  entry,
             "botId":  bot_id,
         },

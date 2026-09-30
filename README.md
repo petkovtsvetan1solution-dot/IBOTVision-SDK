@@ -1,6 +1,6 @@
 # IBOTVision SDK
 
-**Institutional-grade symbol routing infrastructure. P2P order execution. Zero external dependency for enterprise.**
+**Institutional-grade symbol routing infrastructure. P2P message routing. Zero external dependency for enterprise.**
 
 [![PyPI version](https://badge.fury.io/py/ibotvision-sdk.svg)](https://pypi.org/project/ibotvision-sdk/)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
@@ -309,4 +309,4 @@ MIT — see [LICENSE](LICENSE)
 
 IBOT Limited · Registered in Bulgaria (EU) · Company Registration No. [TBD]
 
-*P2P symbol infrastructure. Local execution. Zero external dependency for enterprise.*
+*P2P message routing. Local execution. Zero external dependency for enterprise.*
