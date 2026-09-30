@@ -98,7 +98,10 @@ class PublisherClient:
                 f"publish failed ({resp.status_code}): {resp.text}"
             )
 
-        return resp.json()
+        try:
+            return resp.json()
+        except Exception as exc:
+            raise IBOTVisionErrorHandling(f"gateway returned non-JSON response: {resp.text[:200]}") from exc
 
     @staticmethod
     def register(
