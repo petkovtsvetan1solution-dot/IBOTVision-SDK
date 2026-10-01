@@ -10,25 +10,28 @@
 
 ## What is the IBOTVision SDK?
 
-The IBOTVision SDK is the integration layer for **developers and institutional teams** who want
-to connect their own bots, strategies, and multi-account systems to the IBOTVision symbol
-infrastructure.
 
-It is not a consumer product. End users who want to follow symbols download the
-**VOW App** from [ibotvision.com](https://ibotvision.com). The SDK is for the people
-building the strategies those symbols come from — and for institutions running the
-full stack on their own hardware.
+IBOTVision SDK
+
+The IBOTVision SDK is the integration layer for the Enterprise — Full Stack Package. It is built for developers, individuals, small family firms, and small-to-medium funds that want to own and operate the complete IBOTVision technology stack as a kit — on their own hardware, under their own control.
+
+Use the SDK to connect your own bots, strategies, and multi-account systems to the IBOTVision symbol infrastructure. The rest of the stack — IBOTVision Gateway, NATS JetStream mesh, VOW App, Data Centre, and Web UI — runs natively in your environment. Execution is broker-agnostic: connect through Interactive Brokers, Tradier, Alpaca, TradeStation, OANDA, Saxo Bank, Fortex, or any FIX-compliant broker. Market data is institutional-grade: Bloomberg B-PIPE, LSEG Refinitiv, FactSet, ICE Data Services, Nasdaq Data Link, Cboe, Polygon, and similar providers feed directly into your NATS mesh. Futu and Finviz remain optional sandbox connectors for prototyping only.
+
+The SDK is not a consumer product. End users who want to follow symbols download the VOW App from ibotvision.com. The SDK is for the builders and operators behind those symbols — individual developers, family offices, and emerging or small-to-medium funds that want to deploy, control, and own the full infrastructure themselves.
+
+
 
 ---
 
 ## Two Deployment Models
 
-### Cloud-Connected (Developer / Marketplace)
 
-Your bot publishes symbols to the IBOTVision hosted gateway. Subscribed VOW App
-users receive and execute those symbols on their own broker accounts. You never
-touch their money or orders.
+Two Deployment Models
+Hosted Gateway (Developer / Marketplace)
+Your bot publishes symbols to the IBOTVision-hosted gateway. Subscribed VOW App users receive and execute those symbols on their own broker accounts. You never touch their money or orders.
 
+Self-Hosted (Enterprise — Full Stack Package)
+You run the entire IBOTVision stack — Gateway, NATS JetStream mesh, VOW App, Data Centre, Web UI — on your own hardware. Full control over data, execution, and infrastructure.
 ```
 Your bot  ──►  POST /api/v1/publish  ──►  IBOTVision Gateway
                                                 │
