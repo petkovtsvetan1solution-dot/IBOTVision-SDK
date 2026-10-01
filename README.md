@@ -310,6 +310,6 @@ MIT — see [LICENSE](LICENSE)
 
 ---
 
-IBOT Limited · Registered in Bulgaria (EU) · Company Registration No. [TBD]
+IBOT Limited · Registered in Bulgaria (EU) · Company Registration No. [207152547]
 
-*P2P message routing. Local execution. Zero external dependency for enterprise.*
+P2P message routing with local execution. Near-Zero external dependencies—Cloudflare is required only for [DNS / ingress / signaling / auth / relay], not for routing or execution.
