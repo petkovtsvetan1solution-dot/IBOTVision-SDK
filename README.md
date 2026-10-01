@@ -1,6 +1,6 @@
 # IBOTVision SDK
 
-**Institutional-grade symbol routing infrastructure. P2P message routing. Zero external dependency for enterprise.**
+**Institutional-grade symbol routing infrastructure. P2P message routing. Near Zero External Dependency for enterprise.**
 
 [![PyPI version](https://badge.fury.io/py/ibotvision-sdk.svg)](https://pypi.org/project/ibotvision-sdk/)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
