@@ -10,29 +10,40 @@
 
 ## What is the IBOTVision SDK?
 
+The IBOTVision SDK is the publishing layer for the IBOTVision P2P symbol
+network. Use it to publish signals from your own bots, strategies, and
+multi-account systems into the NATS mesh, where subscribers execute them
+locally through the VOW App.
 
-IBOTVision SDK
+Two ways to run it:
 
-The IBOTVision SDK is the integration layer for the Enterprise — Full Stack Package. It is built for developers, individuals, small family firms, and small-to-medium funds that want to own and operate the complete IBOTVision technology stack as a kit — on their own hardware, under their own control.
+- **Hosted** — publish to the IBOTVision-hosted gateway, grow your subscriber
+  base, earn referral credit and revenue share as you bring in new publishers.
+- **Self-hosted** — run the entire stack (Gateway, NATS mesh, VOW App, Data
+  Centre, Web UI) on your own hardware. Own the infrastructure forever.
 
-Use the SDK to connect your own bots, strategies, and multi-account systems to the IBOTVision symbol infrastructure. The rest of the stack — IBOTVision Gateway, NATS JetStream mesh, VOW App, Data Centre, and Web UI — runs natively in your environment. Execution is broker-agnostic: connect through Interactive Brokers, Tradier, Alpaca, TradeStation, OANDA, Saxo Bank, Fortex, or any FIX-compliant broker. Market data is institutional-grade: Bloomberg B-PIPE, LSEG Refinitiv, FactSet, ICE Data Services, Nasdaq Data Link, Cboe, Polygon, and similar providers feed directly into your NATS mesh. Futu and Finviz remain optional sandbox connectors for prototyping only.
+Execution is broker-agnostic: connect through Interactive Brokers, Tradier,
+Alpaca, TradeStation, OANDA, Saxo Bank, Fortex, or any FIX-compliant broker.
+Market data is institutional-grade: Bloomberg B-PIPE, LSEG Refinitiv, FactSet,
+ICE Data Services, Nasdaq Data Link, Cboe, Polygon, and similar providers feed
+directly into your NATS mesh. Futu and Finviz remain optional sandbox
+connectors for prototyping only.
 
-The SDK is not a consumer product. End users who want to follow symbols download the VOW App from ibotvision.com. The SDK is for the builders and operators behind those symbols — individual developers, family offices, and emerging or small-to-medium funds that want to deploy, control, and own the full infrastructure themselves.
-
-
-
----
+The SDK is not a consumer product. End users who want to follow symbols
+download the VOW App from ibotvision.com. The SDK is for the builders and
+operators behind those symbols — individual developers, family offices, and
+emerging or small-to-medium funds that want to deploy, control, and own the
+infrastructure themselves.
 
 ## Two Deployment Models
 
+### Hosted (Developer / Marketplace)
 
-Two Deployment Models
-Hosted Gateway (Developer / Marketplace)
-Your bot publishes symbols to the IBOTVision-hosted gateway. Subscribed VOW App users receive and execute those symbols on their own broker accounts. You never touch their money or orders.
+Your bot publishes symbols to the IBOTVision-hosted gateway. Subscribed VOW App
+users receive and execute those symbols on their own broker accounts. You never
+touch their money or orders.
 
-Self-Hosted (Enterprise — Full Stack Package)
-You run the entire IBOTVision stack — Gateway, NATS JetStream mesh, VOW App, Data Centre, Web UI — on your own hardware. Full control over data, execution, and infrastructure.
-```
+~~~
 Your bot  ──►  POST /api/v1/publish  ──►  IBOTVision Gateway
                                                 │
                                          NATS Symbol Mesh
@@ -43,38 +54,60 @@ Your bot  ──►  POST /api/v1/publish  ──►  IBOTVision Gateway
                            Subscriber A                  Subscriber B
                            VOW App                       VOW App
                            (their broker)                (their broker)
-```
+~~~
 
 **What crosses the network:** your symbol payload only.
 **What never leaves each subscriber:** their orders, positions, credentials.
 
 ---
 
-### Self-Hosted Enterprise (Full Stack, Zero External Dependency)
+### Self-Hosted (Enterprise — Full Stack Package)
 
-Enterprise clients purchase the full IBOTVision package and deploy it entirely on
-their own hardware. No IBOTVision cloud involvement. No keepalives. No external
-dependency of any kind.
+You run the entire IBOTVision stack — Gateway, NATS JetStream mesh, VOW App,
+Data Centre, Web UI — on your own hardware. Full control over data, execution,
+and infrastructure. No IBOTVision cloud involvement. No keepalives. Near zero
+external dependency of any kind.
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                     YOUR OWN INFRASTRUCTURE                          │
-│                                                                      │
-│  Your Bot / Strategy  ──►  IBOTVision Gateway  ──►  NATS Mesh       │
-│                            (your own server)    (your own nodes)    │
-│                                                        │             │
-│                              ┌─────────────────────────┤            │
-│                              ▼                         ▼            │
-│                        Account A                  Account B         │
-│                        VOW App                    VOW App           │
-│                        (local IBKR)               (local IBKR)     │
-│                                                                      │
-│  Data Centre (your own hardware)                                     │
-│  ├── Market data collectors  ──►  NATS                              │
-│  ├── Basket builder                                                  │
-│  └── EOD persistence                                                 │
-└──────────────────────────────────────────────────────────────────────┘
-```
+~~~
+┌──────────────────── YOUR OWN INFRASTRUCTURE ──────────────────────┐
+│                                                                   │
+│   Data Sources                    Bots / Strategies               │
+│   (Finviz, FUTU, IBKR)             A   B   C   D   ...            │
+│         │                                │                        │
+│         ▼                                │                        │
+│   ┌─────────────┐                        │                        │
+│   │ Data Centre │                        │                        │
+│   │ Market Data │                        │                        │
+│   │ Collectors  │                        │                        │
+│   └──────┬──────┘                        │                        │
+│          │ publishes                     │                        │
+│          ▼                               │                        │
+│   ┌─────────────┐                        │                        │
+│   │  Basket     │                        │                        │
+│   │  Builder    │                        │                        │
+│   │ (subscribes │                        │                        │
+│   │  to DC)     │                        │                        │
+│   └──────┬──────┘                        │                        │
+│          │ publishes universe            │                        │
+│          ▼                               ▼ publishes signals      │
+│   ╔═════════════════════════════════════════════════════════╗     │
+│   ║                      NATS Mesh                          ║     │
+│   ╚═════════════════════════════════════════════════════════╝     │
+│                             │                                     │
+└─────────────────────────────┼─────────────────────────────────────┘
+                              │ subscribers fetch their channels
+              ┌───────────────┼───────────────┐
+              ▼               ▼               ▼
+       ┌────────────┐  ┌────────────┐  ┌────────────┐
+       │  User A    │  │  User B    │  │  User C    │
+       │  VOW App   │  │  VOW App   │  │  VOW App   │
+       │ (device)   │  │ (device)   │  │ (device)   │
+       └─────┬──────┘  └─────┬──────┘  └─────┬──────┘
+             │               │               │
+             ▼               ▼               ▼
+        Brokerage A     Brokerage B     Brokerage C
+     (local IBKR)    (local Schwab)  (local NinjaTrader)
+~~~
 
 Use case: in-house multi-account, multi-strategy orchestration. No subscription
 to IBOTVision services required. You own and operate every node.
@@ -112,22 +145,67 @@ curl -X POST https://api.ibotvision.com/api/v1/publish \
 pip install ibotvision-sdk
 ```
 
+Async (recommended):
+
+```python
+import asyncio
+from ibotvision import AsyncPublisherClient
+
+async def main():
+    async with AsyncPublisherClient(api_key="vow_pub_YOUR_KEY_HERE") as client:
+        await client.publish(symbol="AAPL", action="BUY", lots=100, price=220.50)
+
+asyncio.run(main())
+```
+
+Sync (legacy — uses asyncio.run per call):
+
 ```python
 from ibotvision import PublisherClient
 
 client = PublisherClient(api_key="vow_pub_YOUR_KEY_HERE")
-
-# Publish a symbol to all your subscribers
 client.publish(symbol="AAPL", action="BUY", lots=100, price=220.50)
+```
 
-# Publish with a comment
-client.publish(
-    symbol="NVDA",
-    action="SELL",
-    lots=50,
-    price=875.00,
-    comment="momentum reversal — pattern confirmed",
+From environment variables:
+
+```python
+import os
+os.environ["IBOTVISION_API_KEY"] = "vow_pub_..."
+os.environ["IBOTVISION_GATEWAY_URL"] = "https://api.ibotvision.com"
+
+from ibotvision import AsyncPublisherClient, Config
+client = AsyncPublisherClient(config=Config.from_env())
+```
+
+Rate-limit handling:
+
+```python
+from ibotvision import AsyncPublisherClient, RateLimitError
+import asyncio
+
+async with AsyncPublisherClient(api_key="vow_pub_...") as client:
+    try:
+        await client.publish(symbol="AAPL", action="BUY", lots=1, price=100.0)
+    except RateLimitError as e:
+        wait = e.retry_after or 5.0
+        await asyncio.sleep(wait)
+        await client.publish(symbol="AAPL", action="BUY", lots=1, price=100.0)
+```
+
+White-label override:
+
+```python
+from ibotvision import AsyncPublisherClient, Config
+
+config = Config(
+    api_key="vow_pub_...",
+    gateway_url="https://your-own-gateway.internal",
+    user_agent="YourBrand-SDK/1.0",
+    extra_headers={"X-Tenant": "acme"},
 )
+async with AsyncPublisherClient(config=config) as client:
+    await client.publish(symbol="AAPL", action="BUY", lots=100, price=220.50)
 ```
 
 ---
@@ -230,6 +308,45 @@ the subscriber's machine.
 | `examples/local_webhook.py` | Zero-cloud local symbol via VOW App |
 
 | `examples/multi_account.py` | Enterprise multi-account symbol fan-out |
+
+---
+
+## Publisher Program
+
+Bring publishers into the network and earn referral credit.
+
+| Tier | Trigger | Reward |
+|---|---|---|
+| Starter | 1 paying referral | 1 month free |
+| Growth | 5 paying referrals active for 3 consecutive months | Your own account stays free while they stay subscribed |
+| Partner | 20+ paying referrals | 25% revenue share of downstream subscriptions |
+
+**Pass your referral code at registration:**
+
+```python
+from ibotvision import register
+
+register(
+    display_name="My Strategy Bot",
+    email="you@example.com",
+    referral_code="REF_ABC123",
+)
+```
+
+Or via the async client:
+
+```python
+from ibotvision import AsyncPublisherClient
+
+async with AsyncPublisherClient(api_key="vow_pub_...") as client:
+    await client.register(
+        display_name="My Bot",
+        email="me@example.com",
+        referral_code="REF_ABC123",
+    )
+```
+
+Full program terms: ibotvision.com/publisher-program
 
 ---
 
